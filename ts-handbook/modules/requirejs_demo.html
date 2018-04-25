@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>requirejs demo</title>
+</head>
+<body>
+    <h1>test requirejs</h1>
+    http://requirejs.org/docs/start.html<br>
+    http://requirejs.org/docs/api.html#pageload<br>
+    <hr>
+<pre>
+    typescript生成javascript:
+    默认为commonjs,适用服务器端Node:
+    tsc --module commonjs Test.ts
+    tsc Test.ts ///* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */
+
+    如果用于网页，使用amd:
+    tsc --module amd Test.ts
+</pre>
+    <!-- data-main attribute tells require.js to load
+    scripts/Test.js after require.js loads. -->
+    <!-- <script data-main="./Test" src="./require.min.js"></script> -->
+
+
+    <script src="./require.min.js"></script>
+    <script type='text/javascript'>   
+    /*
+    页完加载完成执行，法1：
+    Note: If the document takes a while to load (maybe it is a very large document, 
+    or has HTML script tags loading large JS files that block DOM completion 
+    until they are done), using domReady as a loader plugin may result in a 
+    RequireJS "timeout" error. If this is a problem either increase the waitSeconds 
+    configuration, or just use domReady as a module and call domReady() 
+    inside the require() callback.
+    */
+    /*
+    require(["domReady!", './LibB', "./LibA"], function(doc, b, a) {   
+        alert('ready');
+        a.A();
+        b.B();
+    });
+    */
+    /* 法2: */
+    require(['domReady', './LibB', "./LibA"], function (domReady, b, a) {
+        domReady(function () {
+            //This function is called once the DOM is ready.
+            //It will be safe to query the DOM and manipulate
+            //DOM nodes in this function.
+            alert('domReady');
+            a.A();
+            b.B();
+            var cls = new a.ClassA();
+            cls.foo();
+        });
+    });
+    </script>
+</body>
+</html>
